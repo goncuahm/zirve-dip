@@ -276,15 +276,17 @@ else:
     rf_trained = True
     st.success("Random Forest trained successfully.")
 
+
 # =====================================================
-# 7. CONFUSION MATRICES
+# 7. CONFUSION MATRICES & CLASSIFICATION REPORTS
 # =====================================================
 if rf_trained:
-    st.subheader("Confusion Matrices")
+    st.subheader("Confusion Matrices & Classification Reports")
 
     y_pred_train = rf.predict(X_train)
     y_pred_test = rf.predict(X_test)
 
+    # --- Confusion Matrices ---
     fig, ax = plt.subplots(1,2,figsize=(14,5))
     disp_train = ConfusionMatrixDisplay(confusion_matrix(y_train, y_pred_train))
     disp_train.plot(ax=ax[0], colorbar=False)
@@ -293,10 +295,19 @@ if rf_trained:
     disp_test = ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred_test))
     disp_test.plot(ax=ax[1], colorbar=False)
     ax[1].set_title("Out-of-Sample Confusion Matrix")
-
     st.pyplot(fig)
 
-    # Latest prediction
+    # --- Classification Reports ---
+    report_train = classification_report(y_train, y_pred_train, output_dict=True)
+    report_test = classification_report(y_test, y_pred_test, output_dict=True)
+
+    st.write("### In-Sample Classification Report")
+    st.dataframe(pd.DataFrame(report_train).transpose().round(3))
+
+    st.write("### Out-of-Sample Classification Report")
+    st.dataframe(pd.DataFrame(report_test).transpose().round(3))
+
+    # --- Latest Prediction ---
     latest_row = df_rf.iloc[[-1]]
     latest_date = latest_row.index[0]
     latest_close = latest_row['Close'].values[0]
@@ -309,8 +320,7 @@ if rf_trained:
     st.write(f"**Latest Date:** {latest_date.date()}, **Close Price:** {latest_close:.2f}")
     st.write(f"Predicted Probability of LONG: {prob_latest:.4f}")
     st.write(f"Recommended Position: {position_latest}")
-else:
-    st.info("Random Forest not trained — cannot predict or show confusion matrices.")
+
 
 
 
