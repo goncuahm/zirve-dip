@@ -8,3 +8,13 @@ tensorflow-cpu
 scipy
 pytz
 threadpoolctl
+streamlit==1.28.0
+yfinance==0.2.27
+pandas==2.1.1
+numpy==1.26.2
+matplotlib==3.8.0
+scipy==1.11.2
+scikit-learn==1.3.2
+python-dateutil==2.8.2
+pytz==2023.3
+threadpoolctl==3.2.0
