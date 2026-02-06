@@ -198,16 +198,38 @@ st.write("### Performance Metrics")
 st.json(metrics)
 
 # =====================================================
-# 5. PLOTS
+# 5. PLOTS (Updated with Regression Channel)
 # =====================================================
-st.subheader("Price & Signals")
+st.subheader("Price & Signals with Regression Channel")
 fig, axes = plt.subplots(2,1,figsize=(16,10))
+
+# --- Linear Regression + 2-Sigma Channel ---
+from sklearn.linear_model import LinearRegression
+
+# Prepare x as numeric index
+x_numeric = np.arange(len(close_prices)).reshape(-1,1)
+y = close_prices.values
+reg = LinearRegression().fit(x_numeric, y)
+y_fit = reg.predict(x_numeric)
+
+# Compute residuals and 2-sigma
+residuals = y - y_fit
+sigma = np.std(residuals)
+upper_band = y_fit + 2*sigma
+lower_band = y_fit - 2*sigma
 
 # Price & Smoothed
 axes[0].plot(close_prices.index, close_prices.values, label='Actual Price')
 axes[0].plot(close_prices.index, detection['prices_smooth'], label='Smoothed Price', linewidth=2)
-axes[0].scatter(close_prices.index[detection['peaks']], close_prices.iloc[detection['peaks']], color='red', marker='v', s=80, label='PEAK')
-axes[0].scatter(close_prices.index[detection['troughs']], close_prices.iloc[detection['troughs']], color='green', marker='^', s=80, label='TROUGH')
+axes[0].scatter(close_prices.index[detection['peaks']], close_prices.iloc[detection['peaks']], 
+                color='red', marker='v', s=80, label='PEAK')
+axes[0].scatter(close_prices.index[detection['troughs']], close_prices.iloc[detection['troughs']], 
+                color='green', marker='^', s=80, label='TROUGH')
+
+# Regression line and 2-sigma channel
+axes[0].plot(close_prices.index, y_fit, color='blue', linestyle='--', linewidth=2, label='Regression Line')
+axes[0].fill_between(close_prices.index, lower_band, upper_band, color='blue', alpha=0.15, label='±2 Sigma')
+
 axes[0].legend(); axes[0].grid(True)
 
 # Cumulative Log Returns
@@ -220,6 +242,7 @@ axes[1].axhline(0, color='black', linestyle='--')
 axes[1].legend(); axes[1].grid(True)
 
 st.pyplot(fig)
+
 
 # =====================================================
 # 6. RANDOM FOREST REGIME MODEL
