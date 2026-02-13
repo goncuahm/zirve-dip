@@ -269,7 +269,7 @@ df_rf['High_14'] = df_rf['High'].rolling(14).max()
 df_rf['Low_14'] = df_rf['Low'].rolling(14).min()
 df_rf = df_rf.dropna()
 
-FEATURES = ['CumRet_3','CumRet_4','CumRet_5','High_14','Low_3','RSI_3' ]
+FEATURES = ['CumRet_3','CumRet_4','CumRet_5','High_3','Low_3','RSI_14' ]
 TARGET = 'Regime'
 
 # Dummy Regime if missing
