@@ -265,9 +265,10 @@ rs = avg_gain/(avg_loss+1e-10)
 df_rf['RSI_14'] = 100-(100/(1+rs))
 df_rf['High_5'] = df_rf['High'].rolling(5).max()
 df_rf['Low_5'] = df_rf['Low'].rolling(5).min()
+df_rf['RSI_down'] = np.where( df_rf['RSI_14'] > 85, -1, 0 )
 df_rf = df_rf.dropna()
 
-FEATURES = ['CumRet_3','CumRet_4','CumRet_5','High_5','Low_5','RSI_14']
+FEATURES = ['CumRet_3','CumRet_4','CumRet_5','High_5','Low_5','RSI_14','RSI_down' ]
 TARGET = 'Regime'
 
 # Dummy Regime if missing
