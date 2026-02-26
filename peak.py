@@ -23,7 +23,7 @@ st.set_page_config(page_title="BIST 100 Directional Trading", layout="wide")
 # =====================================================
 TICKER = st.text_input("Ticker", value="XU100.IS")
 START = st.date_input("Start Date", value=pd.to_datetime("2023-01-01"))
-END = st.date_input("End Date", value=pd.to_datetime("2026-02-28"))
+END = st.date_input("End Date", value=pd.to_datetime("2027-02-28"))
 TRANSACTION_COST = st.number_input("Transaction Cost per Trade", value=0.0, step=0.001, format="%.3f")
 
 st.title(f"Directional Trading on {TICKER}")
