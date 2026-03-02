@@ -284,8 +284,8 @@ rs = avg_gain/(avg_loss+1e-10)
 df_rf['RSI_14'] = 100-(100/(1+rs))
 df_rf['High_4'] = df_rf['High'].rolling(4).max()
 df_rf['Low_4'] = df_rf['Low'].rolling(4).min()
-df_rf['High_14'] = df_rf['High'].rolling(14).max() - df_rf['High'].rolling(3).max()
-df_rf['Low_14'] = df_rf['Low'].rolling(14).min() - df_rf['Low'].rolling(3).min()
+df_rf['High_14'] = df_rf['High'].rolling(14).max() - df_rf['High']#.rolling(2).max()
+df_rf['Low_14'] = df_rf['Low'].rolling(14).min() - df_rf['Low']#.rolling(2).min()
 
 # ── FIX: assign regime from peak/trough state machine ──────────────────────
 df_rf['Regime'] = build_regime(close_prices, detection).reindex(df_rf.index)
